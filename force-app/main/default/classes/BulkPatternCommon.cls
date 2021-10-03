@@ -2,6 +2,25 @@ public with sharing class BulkPatternCommon {
     public BulkPatternCommon() {
 
     }
+    
+    /* 
+        Sample results (TestBulkPatterns.initTestObjects(ops, 100, 15, 15, 40)):
+		bulkOpportunityTest - 
+		Number of SOQL queries: 2 out of 100
+		Number of query rows: 3265 out of 50000
+		Number of SOSL queries: 0 out of 20
+		Number of DML statements: 2 out of 150
+		Number of DML rows: 200 out of 10000
+		Maximum CPU time: 3434 out of 10000
+
+		createTaskTest
+		Number of SOQL queries: 2 out of 100
+		Number of query rows: 0 out of 50000
+		Number of SOSL queries: 0 out of 20
+		Number of DML statements: 2 out of 150
+		Number of DML rows: 200 out of 10000
+		Maximum CPU time: 2 out of 10000
+    */
 
     public static void afterUpdateOpportunityCommon(
         List<Opportunity> newOps, 
@@ -63,7 +82,7 @@ public with sharing class BulkPatternCommon {
 
             /**
              * Looping through opportunities is a waste of time
-             * S loop through Tasks instead of to build a set of Op IDs
+             * Loop through Tasks instead of to build a set of Op IDs
              * with tasks.
              */
 
@@ -72,7 +91,6 @@ public with sharing class BulkPatternCommon {
                  // Get ops with tasks
                  Opportunity op = opsWithNoContactRoles.get(t.WhatId);
                  // Make sure it's assigned to the right person 
-                 // Checking for an open task on an Op by checking if they have the same Owner
                  if(t.OwnerId == op.OwnerId) opsWithTasks.add(op.Id);
              }
              // Creating tasks for ops that have no ocr
